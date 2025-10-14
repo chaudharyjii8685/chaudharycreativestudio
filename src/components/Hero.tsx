@@ -1,25 +1,18 @@
-import logo from "@/assets/logo.jpg";
-
 const Hero = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden brush-texture">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden brush-texture pt-20">
       {/* Animated background shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-glow rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-glow-strong rounded-full blur-3xl opacity-10 animate-pulse delay-1000"></div>
+        <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center text-center space-y-8">
-          {/* Logo */}
-          <img 
-            src={logo} 
-            alt="Chaudhary Creative Studio Logo" 
-            className="w-48 h-48 md:w-64 md:h-64 object-contain animate-fade-in"
-          />
 
           {/* Title */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight animate-fade-in">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight animate-fade-in bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Chaudhary Creative Studio
           </h1>
 
@@ -31,7 +24,7 @@ const Hero = () => {
           {/* CTA Button */}
           <a 
             href="#contact" 
-            className="mt-8 px-8 py-4 bg-primary text-primary-foreground rounded-lg text-lg font-semibold glow-hover animate-fade-in delay-300"
+            className="mt-8 px-8 py-4 bg-gradient-to-r from-primary via-secondary to-accent text-white rounded-lg text-lg font-semibold glow-hover animate-fade-in delay-300 shadow-lg shadow-primary/50"
           >
             Start Your Project
           </a>
