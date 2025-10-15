@@ -7,6 +7,7 @@ import WorkProcess from "@/components/WorkProcess";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import AIHelper from "@/components/AIHelper";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <WhyChooseUs />
       <ContactForm />
       <Footer />
+      <AIHelper />
     </div>
   );
 };
