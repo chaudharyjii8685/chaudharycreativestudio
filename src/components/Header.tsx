@@ -19,8 +19,11 @@ const Header = () => {
           <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">About</a>
           <a href="#services" className="text-sm font-medium hover:text-secondary transition-colors">Services</a>
           <a href="#portfolio" className="text-sm font-medium hover:text-accent transition-colors">Portfolio</a>
-          <a href="#contact" className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-lg text-sm font-semibold glow-hover">
-            Start Project
+          <a href="#login" className="px-4 py-2 border border-primary text-primary hover:bg-primary/10 rounded-lg text-sm font-semibold transition-colors">
+            Login
+          </a>
+          <a href="#signup" className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg text-sm font-semibold glow-hover">
+            Sign Up
           </a>
         </nav>
       </div>
