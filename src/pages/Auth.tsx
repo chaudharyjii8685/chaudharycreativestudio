@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Facebook, Mail } from "lucide-react";
+import { Phone } from "lucide-react";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -16,6 +16,9 @@ const Auth = () => {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupName, setSignupName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -76,31 +79,45 @@ const Auth = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        },
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: phoneNumber,
       });
+
       if (error) throw error;
+
+      setOtpSent(true);
+      toast.success("OTP sent to your phone!");
     } catch (error: any) {
-      toast.error(error.message || "Failed to login with Google");
+      toast.error(error.message || "Failed to send OTP");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleFacebookLogin = async () => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        },
+      const { error } = await supabase.auth.verifyOtp({
+        phone: phoneNumber,
+        token: otp,
+        type: 'sms',
       });
+
       if (error) throw error;
+
+      toast.success("Successfully logged in!");
+      navigate("/");
     } catch (error: any) {
-      toast.error(error.message || "Failed to login with Facebook");
+      toast.error(error.message || "Failed to verify OTP");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -115,44 +132,14 @@ const Auth = () => {
             Login or create an account to continue
           </p>
 
-          <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Login</TabsTrigger>
+          <Tabs defaultValue="email" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsTrigger value="email">Email</TabsTrigger>
+              <TabsTrigger value="phone">Phone</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="login">
-              <div className="space-y-4 mb-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={handleGoogleLogin}
-                >
-                  <Mail className="mr-2 h-4 w-4" />
-                  Continue with Google
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={handleFacebookLogin}
-                >
-                  <Facebook className="mr-2 h-4 w-4" />
-                  Continue with Facebook
-                </Button>
-              </div>
-
-              <div className="relative mb-4">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with email
-                  </span>
-                </div>
-              </div>
+            <TabsContent value="email">
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
@@ -185,6 +172,71 @@ const Auth = () => {
                   {loading ? "Loading..." : "Login"}
                 </Button>
               </form>
+            </TabsContent>
+
+            <TabsContent value="phone">
+              {!otpSent ? (
+                <form onSubmit={handleSendOtp} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone-number">Phone Number</Label>
+                    <Input
+                      id="phone-number"
+                      type="tel"
+                      placeholder="+91 1234567890"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Include country code (e.g., +91 for India)
+                    </p>
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-secondary"
+                    disabled={loading}
+                  >
+                    <Phone className="mr-2 h-4 w-4" />
+                    {loading ? "Sending..." : "Send OTP"}
+                  </Button>
+                </form>
+              ) : (
+                <form onSubmit={handleVerifyOtp} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="otp">Enter OTP</Label>
+                    <Input
+                      id="otp"
+                      type="text"
+                      placeholder="123456"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      required
+                      maxLength={6}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      OTP sent to {phoneNumber}
+                    </p>
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-secondary"
+                    disabled={loading}
+                  >
+                    {loading ? "Verifying..." : "Verify OTP"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => {
+                      setOtpSent(false);
+                      setOtp("");
+                    }}
+                  >
+                    Change Phone Number
+                  </Button>
+                </form>
+              )}
             </TabsContent>
 
             <TabsContent value="signup">
