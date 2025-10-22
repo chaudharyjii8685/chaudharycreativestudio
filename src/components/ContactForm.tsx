@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,20 +11,42 @@ const ContactForm = () => {
     name: "",
     email: "",
     projectType: "",
+    selectedPackage: "",
+    packagePrice: "",
     description: ""
   });
+
+  useEffect(() => {
+    const handlePackageSelection = (event: CustomEvent) => {
+      const { packageName, packagePrice } = event.detail;
+      setFormData(prev => ({
+        ...prev,
+        selectedPackage: packageName,
+        packagePrice: packagePrice,
+        projectType: packageName
+      }));
+    };
+
+    window.addEventListener('packageSelected', handlePackageSelection as EventListener);
+    return () => window.removeEventListener('packageSelected', handlePackageSelection as EventListener);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // For now, just show success message
-    // Once Lovable Cloud is enabled, this will save to database
+    // Show success message with package details
+    const packageInfo = formData.selectedPackage 
+      ? ` for ${formData.selectedPackage} package (${formData.packagePrice})`
+      : "";
+    
     toast({
       title: "Request Received!",
-      description: "We'll get back to you within 24 hours.",
+      description: `We'll get back to you within 24 hours${packageInfo}.`,
     });
     
-    setFormData({ name: "", email: "", projectType: "", description: "" });
+    console.log("Form submitted with data:", formData); // You can see the selected package here
+    
+    setFormData({ name: "", email: "", projectType: "", selectedPackage: "", packagePrice: "", description: "" });
   };
 
   return (
@@ -63,21 +85,24 @@ const ContactForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-2">Project Type</label>
+              <label className="block text-sm font-semibold mb-2">Selected Package</label>
               <Select 
                 value={formData.projectType}
-                onValueChange={(value) => setFormData({...formData, projectType: value})}
+                onValueChange={(value) => setFormData({...formData, projectType: value, selectedPackage: value})}
               >
                 <SelectTrigger className="bg-background">
-                  <SelectValue placeholder="Select a service" />
+                  <SelectValue placeholder="Select a package" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="Basic">Basic - Starter Website (₹7,500 - ₹9,000)</SelectItem>
+                  <SelectItem value="Standard">Standard - Business Pro Website (₹24,000 - ₹26,000)</SelectItem>
+                  <SelectItem value="Premium">Premium - Advanced Website (₹43,000 - ₹45,000)</SelectItem>
                   <SelectItem value="video">Video Editing</SelectItem>
                   <SelectItem value="image">Image Editing</SelectItem>
                   <SelectItem value="data">Data Entry</SelectItem>
                   <SelectItem value="graphics">Graphics Design</SelectItem>
                   <SelectItem value="templates">Templates & Resumes</SelectItem>
-                  <SelectItem value="web">Web & App Development</SelectItem>
+                  <SelectItem value="web">Other Web & App Development</SelectItem>
                 </SelectContent>
               </Select>
             </div>

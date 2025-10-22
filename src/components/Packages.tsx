@@ -141,7 +141,16 @@ const Packages = () => {
 
               <Button 
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:scale-105 transition-transform"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                    // Dispatch custom event with package details
+                    window.dispatchEvent(new CustomEvent('packageSelected', { 
+                      detail: { packageName: pkg.name, packagePrice: pkg.price } 
+                    }));
+                  }
+                }}
               >
                 Get Started
               </Button>
