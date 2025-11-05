@@ -64,6 +64,7 @@ const AIHelper = () => {
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-gradient-to-r from-primary via-secondary to-accent hover:shadow-xl hover:scale-110 transition-all duration-300 z-50"
           size="icon"
+          aria-label="Open AI chat assistant"
         >
           <MessageCircle className="h-6 w-6" />
         </Button>

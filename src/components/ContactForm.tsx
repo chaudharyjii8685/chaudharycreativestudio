@@ -88,7 +88,7 @@ const ContactForm = () => {
                 value={formData.projectType}
                 onValueChange={(value) => setFormData({...formData, projectType: value, selectedPackage: value})}
               >
-                <SelectTrigger className="bg-background">
+                <SelectTrigger className="bg-background" aria-label="Select a package">
                   <SelectValue placeholder="Select a package" />
                 </SelectTrigger>
                 <SelectContent>
