@@ -7,6 +7,29 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Phone } from "lucide-react";
+import { z } from "zod";
+
+// Validation schemas
+const phoneSchema = z.string()
+  .regex(/^\+[1-9]\d{1,14}$/, "Please enter a valid phone number with country code (e.g., +911234567890)");
+
+const emailSchema = z.string()
+  .email("Please enter a valid email address")
+  .max(255, "Email must be less than 255 characters");
+
+const passwordSchema = z.string()
+  .min(8, "Password must be at least 8 characters")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+  .regex(/[0-9]/, "Password must contain at least one number");
+
+const nameSchema = z.string()
+  .trim()
+  .min(2, "Name must be at least 2 characters")
+  .max(100, "Name must be less than 100 characters");
+
+const otpSchema = z.string()
+  .regex(/^\d{6}$/, "OTP must be exactly 6 digits");
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -35,12 +58,34 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate inputs
+      const nameValidation = nameSchema.safeParse(signupName);
+      if (!nameValidation.success) {
+        toast.error(nameValidation.error.errors[0].message);
+        setLoading(false);
+        return;
+      }
+
+      const emailValidation = emailSchema.safeParse(signupEmail);
+      if (!emailValidation.success) {
+        toast.error(emailValidation.error.errors[0].message);
+        setLoading(false);
+        return;
+      }
+
+      const passwordValidation = passwordSchema.safeParse(signupPassword);
+      if (!passwordValidation.success) {
+        toast.error(passwordValidation.error.errors[0].message);
+        setLoading(false);
+        return;
+      }
+
       const { error } = await supabase.auth.signUp({
-        email: signupEmail,
+        email: signupEmail.trim(),
         password: signupPassword,
         options: {
           data: {
-            full_name: signupName,
+            full_name: signupName.trim(),
           },
           emailRedirectTo: `${window.location.origin}/`,
         },
@@ -62,8 +107,16 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate phone number
+      const phoneValidation = phoneSchema.safeParse(phoneNumber);
+      if (!phoneValidation.success) {
+        toast.error(phoneValidation.error.errors[0].message);
+        setLoading(false);
+        return;
+      }
+
       const { error } = await supabase.auth.signInWithOtp({
-        phone: phoneNumber,
+        phone: phoneNumber.trim(),
       });
 
       if (error) throw error;
@@ -82,9 +135,17 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate OTP
+      const otpValidation = otpSchema.safeParse(otp);
+      if (!otpValidation.success) {
+        toast.error(otpValidation.error.errors[0].message);
+        setLoading(false);
+        return;
+      }
+
       const { error } = await supabase.auth.verifyOtp({
-        phone: phoneNumber,
-        token: otp,
+        phone: phoneNumber.trim(),
+        token: otp.trim(),
         type: 'sms',
       });
 

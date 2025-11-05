@@ -44,8 +44,6 @@ const ContactForm = () => {
       description: `We'll get back to you within 24 hours${packageInfo}.`,
     });
     
-    console.log("Form submitted with data:", formData); // You can see the selected package here
-    
     setFormData({ name: "", email: "", projectType: "", selectedPackage: "", packagePrice: "", description: "" });
   };
 
