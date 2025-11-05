@@ -28,6 +28,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 bg-background rounded-full glow-hover"
+                aria-label="Visit our Instagram page"
               >
                 <Instagram className="w-6 h-6" />
               </a>
@@ -36,6 +37,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 bg-background rounded-full glow-hover"
+                aria-label="Visit our YouTube channel"
               >
                 <Youtube className="w-6 h-6" />
               </a>
