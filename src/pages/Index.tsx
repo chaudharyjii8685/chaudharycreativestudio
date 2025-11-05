@@ -1,29 +1,34 @@
+import { lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Services from "@/components/Services";
-import Packages from "@/components/Packages";
-import Portfolio from "@/components/Portfolio";
-import WorkProcess from "@/components/WorkProcess";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import ContactForm from "@/components/ContactForm";
-import Footer from "@/components/Footer";
-import AIHelper from "@/components/AIHelper";
+
+// Lazy load below-the-fold components
+const About = lazy(() => import("@/components/About"));
+const Services = lazy(() => import("@/components/Services"));
+const Packages = lazy(() => import("@/components/Packages"));
+const Portfolio = lazy(() => import("@/components/Portfolio"));
+const WorkProcess = lazy(() => import("@/components/WorkProcess"));
+const WhyChooseUs = lazy(() => import("@/components/WhyChooseUs"));
+const ContactForm = lazy(() => import("@/components/ContactForm"));
+const Footer = lazy(() => import("@/components/Footer"));
+const AIHelper = lazy(() => import("@/components/AIHelper"));
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
       <Hero />
-      <About />
-      <Services />
-      <Packages />
-      <Portfolio />
-      <WorkProcess />
-      <WhyChooseUs />
-      <ContactForm />
-      <Footer />
-      <AIHelper />
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <About />
+        <Services />
+        <Packages />
+        <Portfolio />
+        <WorkProcess />
+        <WhyChooseUs />
+        <ContactForm />
+        <Footer />
+        <AIHelper />
+      </Suspense>
     </div>
   );
 };
