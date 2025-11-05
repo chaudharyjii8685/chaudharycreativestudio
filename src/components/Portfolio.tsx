@@ -8,6 +8,10 @@ const Portfolio = () => {
     { title: "Marketing Banners", category: "Design" }
   ];
 
+  const videos = [
+    { title: "Creative Mind Presentation", src: "/videos/presentation.mp4" }
+  ];
+
   return (
     <section id="portfolio" className="section-spacing bg-card brush-texture">
       <div className="container mx-auto px-4">
@@ -18,6 +22,29 @@ const Portfolio = () => {
           </p>
         </div>
 
+        {/* Video Portfolio */}
+        <div className="mb-12">
+          {videos.map((video, index) => (
+            <div 
+              key={index}
+              className="relative overflow-hidden rounded-lg bg-background border-2 border-border glow-hover max-w-4xl mx-auto"
+            >
+              <video 
+                controls 
+                className="w-full"
+                preload="metadata"
+              >
+                <source src={video.src} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-bold">{video.title}</h3>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Project Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <div 

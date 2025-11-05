@@ -76,7 +76,7 @@ const AIHelper = () => {
           <div className="bg-gradient-to-r from-primary via-secondary to-accent p-4 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5 text-white" />
-              <h3 className="font-bold text-white">AI Helper</h3>
+              <h3 className="font-bold text-white">Ask</h3>
             </div>
             <Button
               onClick={() => setIsOpen(false)}
