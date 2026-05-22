@@ -115,6 +115,7 @@ const ContactForm = () => {
               <Input 
                 type="email"
                 required
+                maxLength={255}
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                 placeholder="your@email.com"
