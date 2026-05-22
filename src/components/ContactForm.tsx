@@ -102,6 +102,7 @@ const ContactForm = () => {
               <label className="block text-sm font-semibold mb-2">Full Name</label>
               <Input 
                 required
+                maxLength={100}
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
                 placeholder="Your name"
