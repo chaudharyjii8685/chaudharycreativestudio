@@ -1,0 +1,7 @@
+# Chaudhary Creative Studio
+
+> Creative studio offering logo design, branding, posters, thumbnails, resumes, templates, and web and app development for startups, businesses, and content creators.
+
+## Pages
+
+- [Home](/): Services, packages, portfolio, work process, and contact form for Chaudhary Creative Studio.
