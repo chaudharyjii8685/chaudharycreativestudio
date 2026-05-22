@@ -58,6 +58,8 @@ const ContactForm = () => {
       name: formData.name,
       email: formData.email,
       projectType: formData.projectType,
+      selectedPackage: formData.selectedPackage,
+      packagePrice: formData.packagePrice,
       description: formData.description,
     });
 
@@ -71,8 +73,9 @@ const ContactForm = () => {
       return;
     }
 
-    const safePackage = formData.selectedPackage.replace(/[<>]/g, "").slice(0, 100);
-    const safePrice = formData.packagePrice.replace(/[<>]/g, "").slice(0, 50);
+    const data = result.data;
+    const safePackage = (data.selectedPackage || "").replace(/[<>]/g, "").slice(0, 100);
+    const safePrice = (data.packagePrice || "").replace(/[<>]/g, "").slice(0, 50);
     const packageInfo = safePackage ? ` for ${safePackage} package (${safePrice})` : "";
 
     toast({
