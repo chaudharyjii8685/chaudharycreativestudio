@@ -7,10 +7,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 
 const contactSchema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
-  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  name: z.string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be less than 100 characters")
+    .regex(/^[\p{L}\s'-]+$/u, "Name can only contain letters, spaces, hyphens and apostrophes"),
+  email: z.string()
+    .trim()
+    .email("Invalid email address")
+    .max(255, "Email must be less than 255 characters"),
   projectType: z.string().trim().max(100).optional().or(z.literal("")),
-  description: z.string().trim().min(10, "Description must be at least 10 characters").max(1000, "Description must be less than 1000 characters"),
+  selectedPackage: z.string().trim().max(100).optional().or(z.literal("")),
+  packagePrice: z.string().trim().max(50).optional().or(z.literal("")),
+  description: z.string()
+    .trim()
+    .min(10, "Description must be at least 10 characters")
+    .max(1000, "Description must be less than 1000 characters"),
 });
 
 const ContactForm = () => {
@@ -46,6 +58,8 @@ const ContactForm = () => {
       name: formData.name,
       email: formData.email,
       projectType: formData.projectType,
+      selectedPackage: formData.selectedPackage,
+      packagePrice: formData.packagePrice,
       description: formData.description,
     });
 
@@ -59,8 +73,9 @@ const ContactForm = () => {
       return;
     }
 
-    const safePackage = formData.selectedPackage.replace(/[<>]/g, "").slice(0, 100);
-    const safePrice = formData.packagePrice.replace(/[<>]/g, "").slice(0, 50);
+    const data = result.data;
+    const safePackage = (data.selectedPackage || "").replace(/[<>]/g, "").slice(0, 100);
+    const safePrice = (data.packagePrice || "").replace(/[<>]/g, "").slice(0, 50);
     const packageInfo = safePackage ? ` for ${safePackage} package (${safePrice})` : "";
 
     toast({
@@ -87,6 +102,7 @@ const ContactForm = () => {
               <label className="block text-sm font-semibold mb-2">Full Name</label>
               <Input 
                 required
+                maxLength={100}
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
                 placeholder="Your name"
@@ -99,6 +115,7 @@ const ContactForm = () => {
               <Input 
                 type="email"
                 required
+                maxLength={255}
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                 placeholder="your@email.com"
@@ -133,6 +150,7 @@ const ContactForm = () => {
               <label className="block text-sm font-semibold mb-2">Project Description</label>
               <Textarea 
                 required
+                maxLength={1000}
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 placeholder="Tell us about your project..."
