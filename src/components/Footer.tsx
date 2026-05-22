@@ -1,4 +1,5 @@
-import { Mail, Instagram, Youtube } from "lucide-react";
+import { Mail } from "lucide-react";
+import instagramQr from "@/assets/instagram-qr.png";
 
 const Footer = () => {
   return (
@@ -19,29 +20,23 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Social Links */}
+          {/* Follow Us */}
           <div>
             <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-            <div className="flex gap-4">
-              <a 
-                href="https://instagram.com/aditya.__65" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-background rounded-full glow-hover"
-                aria-label="Visit our Instagram page"
-              >
-                <Instagram className="w-6 h-6" />
-              </a>
-              <a 
-                href="https://youtube.com/@B-studio" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-background rounded-full glow-hover"
-                aria-label="Visit our YouTube channel"
-              >
-                <Youtube className="w-6 h-6" />
-              </a>
-            </div>
+            <a
+              href="https://instagram.com/aditya.__65"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Scan to visit our Instagram"
+              className="inline-block"
+            >
+              <img
+                src={instagramQr}
+                alt="Instagram QR code for @adii._8"
+                className="w-40 h-40 rounded-lg bg-background p-2"
+                loading="lazy"
+              />
+            </a>
           </div>
 
           {/* Quick Links */}
