@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -162,6 +163,14 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 p-4">
+      <Helmet>
+        <title>Login or Sign Up — Chaudhary Creative Studio</title>
+        <meta name="description" content="Sign in or create your Chaudhary Creative Studio account to manage projects and request creative services." />
+        <link rel="canonical" href="https://chaudharycreativestudio.lovable.app/auth" />
+        <meta property="og:title" content="Login or Sign Up — Chaudhary Creative Studio" />
+        <meta property="og:description" content="Sign in or create your account to manage projects with Chaudhary Creative Studio." />
+        <meta property="og:url" content="https://chaudharycreativestudio.lovable.app/auth" />
+      </Helmet>
       <div className="w-full max-w-md">
         <div className="bg-background/80 backdrop-blur-md rounded-2xl shadow-2xl border border-border p-8">
           <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
