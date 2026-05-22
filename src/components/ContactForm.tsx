@@ -1,9 +1,17 @@
 import { useState, useEffect } from "react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  projectType: z.string().trim().max(100).optional().or(z.literal("")),
+  description: z.string().trim().min(10, "Description must be at least 10 characters").max(1000, "Description must be less than 1000 characters"),
+});
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -33,17 +41,33 @@ const ContactForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Show success message with package details
-    const packageInfo = formData.selectedPackage 
-      ? ` for ${formData.selectedPackage} package (${formData.packagePrice})`
-      : "";
-    
+
+    const result = contactSchema.safeParse({
+      name: formData.name,
+      email: formData.email,
+      projectType: formData.projectType,
+      description: formData.description,
+    });
+
+    if (!result.success) {
+      const firstError = result.error.issues[0];
+      toast({
+        title: "Invalid input",
+        description: firstError.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const safePackage = formData.selectedPackage.replace(/[<>]/g, "").slice(0, 100);
+    const safePrice = formData.packagePrice.replace(/[<>]/g, "").slice(0, 50);
+    const packageInfo = safePackage ? ` for ${safePackage} package (${safePrice})` : "";
+
     toast({
       title: "Request Received!",
       description: `We'll get back to you within 24 hours${packageInfo}.`,
     });
-    
+
     setFormData({ name: "", email: "", projectType: "", selectedPackage: "", packagePrice: "", description: "" });
   };
 
