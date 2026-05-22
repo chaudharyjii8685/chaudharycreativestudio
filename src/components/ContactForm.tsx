@@ -150,6 +150,7 @@ const ContactForm = () => {
               <label className="block text-sm font-semibold mb-2">Project Description</label>
               <Textarea 
                 required
+                maxLength={1000}
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 placeholder="Tell us about your project..."
