@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 
@@ -16,6 +17,14 @@ const AIHelper = lazy(() => import("@/components/AIHelper"));
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Chaudhary Creative Studio — Design & Web Development</title>
+        <meta name="description" content="Creative studio for logo design, branding, posters, thumbnails, resumes, plus web and app development for startups and creators." />
+        <link rel="canonical" href="https://chaudharycreativestudio.lovable.app/" />
+        <meta property="og:title" content="Chaudhary Creative Studio — Design & Web Development" />
+        <meta property="og:description" content="Logo design, branding, posters, thumbnails, resumes, and web/app development for brands that want to stand out." />
+        <meta property="og:url" content="https://chaudharycreativestudio.lovable.app/" />
+      </Helmet>
       <Header />
       <main>
         <Hero />
